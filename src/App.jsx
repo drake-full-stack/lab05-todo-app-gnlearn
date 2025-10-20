@@ -12,7 +12,7 @@ function App() {
   const [inputValue, setInputValue] = useState("");
 
   // ===== Functions ======
-  const handleAddTask = (e) => {
+    const handleAddTask = (e) => {
     e.preventDefault();
 
     if (inputValue.trim()) {
@@ -23,7 +23,15 @@ function App() {
   const handleDelete = (indexToDelete) => {
     setTasks(tasks.filter((_, index) => index !== indexToDelete));
   };
-
+  const handleToggle = (indexToToggle) => {
+    setTasks(tasks.map((task, index) => {
+      if (index === indexToToggle) {
+        return {...task, completed: !task.completed};
+      }
+      return task;
+    }));
+  };
+  console.log(tasks);
   // ==== JSX that gets returned =====
   return (
     <div className="container">
@@ -40,10 +48,15 @@ function App() {
           Add
         </button>
       </form>
-
+      
       <ul className="task-list">
         {tasks.map((task, index) => (
           <li key={index} className="task-item">
+            <input 
+              type="checkbox" 
+              checked={task.completed}
+              onChange={() => handleToggle(index)}
+            />
             <span className="task-text">{task.text}</span>
             <button
               className="delete-button"
